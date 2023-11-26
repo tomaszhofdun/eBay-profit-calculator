@@ -1,6 +1,7 @@
 const apiClient = {
   headers: { Accept: "text/csv" },
-  baseUrl: process.env.API_URL,
+  // baseUrl: process.env.API_URL,
+  baseUrl: "https://zesty-griffin-ec1b47.netlify.app/",
 
   async get(url) {
     const apiUrl = new URL(`${this.baseUrl}/${url}`)
