@@ -1,10 +1,10 @@
 const apiClient = {
   headers: { Accept: "text/csv" },
-  baseUrl: process.env.REACT_APP_API_URL,
+  baseUrl: process.env.API_URL,
 
   async get(url) {
     const apiUrl = new URL(`${this.baseUrl}/${url}`)
-    console.log(this.baseUrl, "color: #ffac40")
+    // console.log(this.baseUrl, "color: #ffac40")
 
     // const apiUrl = new URL(`https://zesty-griffin-ec1b47.netlify.app//dasa`)
 
