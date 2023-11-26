@@ -5,7 +5,7 @@ import "@fontsource/merriweather"
 import "./src/styles/normalize.css"
 // custom CSS styles
 import "./src/styles/style.css"
-import "./src/styles/epc-styles.css"
+// import "./src/styles/epc-styles.css"
 
 // Highlighting for code blocks
 import "prismjs/themes/prism.css"
