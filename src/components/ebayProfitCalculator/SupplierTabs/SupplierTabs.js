@@ -1,9 +1,10 @@
 import React, { useState } from "react"
+import { Button, Heading } from "@chakra-ui/react"
 
 const Tab = ({ children, isActive, label }) => {
   return isActive ? (
     <div>
-      <h2>Kalkulator {label}</h2>
+      <Heading as="h2">Kalkulator {label}</Heading>
       {children}
     </div>
   ) : null
@@ -20,32 +21,28 @@ const SupplierTabs = ({ items }) => {
     <div className="epc-tabs">
       <div className="">
         <div className="">
-          <div className="">
-            {items.map((item, index) => (
-              <button
-                key={index}
-                className={`epc-tabs__button ${
-                  activeTab === index ? "active" : ""
-                }`}
-                onClick={() => handleTabClick(index)}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
+          {items.map((item, index) => (
+            <Button
+              key={index}
+              className={`epc-tabs__button ${
+                activeTab === index ? "active" : ""
+              }`}
+              onClick={() => handleTabClick(index)}
+              colorScheme="blue"
+              mr={3}
+            >
+              {item.label}
+            </Button>
+          ))}
         </div>
+      </div>
+      <div className="">
         <div className="">
-          <div className="">
-            {items.map((item, index) => (
-              <Tab
-                key={index}
-                isActive={activeTab === index}
-                label={item.label}
-              >
-                {item.children}
-              </Tab>
-            ))}
-          </div>
+          {items.map((item, index) => (
+            <Tab key={index} isActive={activeTab === index} label={item.label}>
+              {item.children}
+            </Tab>
+          ))}
         </div>
       </div>
     </div>

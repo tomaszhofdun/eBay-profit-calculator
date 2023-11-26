@@ -45,13 +45,7 @@ const EbayProfitCalculator = () => {
       children: <Polcar data={polcarData} />,
     },
   ]
-  return (
-    <section className="">
-      <div className="">
-        <SupplierTabs items={items} />
-      </div>
-    </section>
-  )
+  return <SupplierTabs items={items} />
 }
 
 export default EbayProfitCalculator

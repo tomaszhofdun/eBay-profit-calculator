@@ -1,5 +1,14 @@
 import React, { useState, useRef, useEffect } from "react"
 import { parseToFloat } from "../../../helpers/parseNumbers"
+import {
+  AbsoluteCenter,
+  Box,
+  Divider,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  InputRightAddon,
+} from "@chakra-ui/react"
 
 const ProfitCalculator = ({
   data: { supplierData, fixedCostsData, percentageFeesData },
@@ -108,54 +117,58 @@ const ProfitCalculator = ({
 
   return (
     <div className="epc-calculator">
-      <label htmlFor="euro-currency">Kurs EURO do PLN </label>
-      <input
-        id="euro-currency"
-        name="euro-currency"
-        type="number"
-        value={euroCurrency}
-        onChange={handleChange}
-      />
-      <br />
-      <label htmlFor="supplier-costs">Koszty dostawcy (excel) </label>
-      <input
-        id="supplier-costs"
-        name="supplier-costs"
-        type="number"
-        value={supplierCosts}
-        onChange={handleChange}
-      />
-      <span> zł</span>
-      <br />
-      <label htmlFor="fixed-costs">Koszty stałe (excel) </label>
-      <input
-        id="fixed-costs"
-        name="fixed-costs"
-        type="number"
-        value={fixedCosts}
-        onChange={handleChange}
-      />
-      <span> zł</span>
-      <br />
-      <label htmlFor="percentage-fees">
-        Koszty procentowe od sprzedaży (excel)
-      </label>
-      <input
-        id="percentage-fees"
-        name="percentage-fees"
-        type="number"
-        min="1"
-        max="100"
-        value={percentageFees}
-        onChange={handleChange}
-      />
-      <span> %</span>
-      <br />
-      <form>
-        <label className="epc-calculator__label--blue" htmlFor="price">
-          Cena zakupu{" "}
-        </label>
-        <input
+      <InputGroup pb={5}>
+        <InputLeftAddon children="Kurs EURO do PLN " />
+        <Input
+          id="euro-currency"
+          name="euro-currency"
+          type="number"
+          value={euroCurrency}
+          onChange={handleChange}
+        />
+      </InputGroup>
+
+      <InputGroup>
+        <InputLeftAddon children="Koszty dostawcy (excel) " />
+        <Input
+          id="supplier-costs"
+          name="supplier-costs"
+          type="number"
+          value={supplierCosts}
+          onChange={handleChange}
+        />
+        <InputRightAddon children="zł" />
+      </InputGroup>
+
+      <InputGroup>
+        <InputLeftAddon children="Koszty stałe (excel) " />
+        <Input
+          id="fixed-costs"
+          name="fixed-costs"
+          type="number"
+          value={fixedCosts}
+          onChange={handleChange}
+        />
+        <InputRightAddon children="zł" />
+      </InputGroup>
+
+      <InputGroup pb={5}>
+        <InputLeftAddon children="Koszty procentowe od sprzedaży (excel)" />
+        <Input
+          id="percentage-fees"
+          name="percentage-fees"
+          type="number"
+          min="1"
+          max="100"
+          value={percentageFees}
+          onChange={handleChange}
+        />
+        <InputRightAddon children="%" />
+      </InputGroup>
+
+      <InputGroup>
+        <InputLeftAddon children="Cena zakupu" />
+        <Input
           id="price"
           type="number"
           name="price"
@@ -163,12 +176,12 @@ const ProfitCalculator = ({
           value={price}
           onChange={handleChange}
         />
-        <span> zł</span>
-        <br />
-        <label className="epc-calculator__label--blue" htmlFor="profit">
-          Oczekiwany zysk{" "}
-        </label>
-        <input
+        <InputRightAddon children="zł" />
+      </InputGroup>
+
+      <InputGroup pb={5}>
+        <InputLeftAddon children="Oczekiwany zysk" />
+        <Input
           id="profit"
           type="number"
           name="profit"
@@ -176,20 +189,30 @@ const ProfitCalculator = ({
           value={profit}
           onChange={handleChange}
         />
-        <span> zł</span>
-        <br />
-        <br />
-        <label htmlFor="finalPrice">Cena końcowa </label>
-        <input
+        <InputRightAddon children="zł" />
+      </InputGroup>
+
+      <Box position="relative" padding="10">
+        <Divider mb={5} />
+        <AbsoluteCenter bg="white" px="4">
+          Wynik poniżej
+        </AbsoluteCenter>
+      </Box>
+
+      <InputGroup>
+        <InputLeftAddon children="Cena końcowa" />
+        <Input
           id="finalPrice"
           type="number"
           name="finalPrice"
           placeholder="Cena końcowa"
           value={finalPrice}
           readOnly
+          focusBorderColor="red.400"
+          variant="filled"
         />
-        <span> EURO</span>
-      </form>
+        <InputRightAddon children="EURO" />
+      </InputGroup>
     </div>
   )
 }
