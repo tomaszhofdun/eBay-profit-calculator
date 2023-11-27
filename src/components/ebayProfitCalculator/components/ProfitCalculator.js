@@ -1,13 +1,15 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { parseToFloat } from "../../../helpers/parseNumbers"
 import {
   AbsoluteCenter,
   Box,
+  Button,
   Divider,
   Input,
   InputGroup,
   InputLeftAddon,
   InputRightAddon,
+  InputRightElement,
 } from "@chakra-ui/react"
 
 const ProfitCalculator = ({
@@ -18,8 +20,8 @@ const ProfitCalculator = ({
   const [fixedCosts, setFixedCosts] = useState(0)
   const [percentageFees, setPercentageFees] = useState(0)
   const [euroCurrency, setEuroCurrency] = useState(0.23)
-  const [price, setPrice] = useState(0)
-  const [profit, setProfit] = useState(0)
+  const [price, setPrice] = useState("")
+  const [profit, setProfit] = useState("")
   const [finalPrice, setFinalPrice] = useState(0)
 
   const getSupplierCosts = supplierData => {
@@ -78,9 +80,11 @@ const ProfitCalculator = ({
    * @returns {number} The final price in euros.
    */
   const getFinalPrice = () => {
-    const priceNetto = supplierCosts + fixedCosts + price + profit
+    const priceNetto =
+      (supplierCosts || 0) + (fixedCosts || 0) + (price || 0) + (profit || 0)
+
     const priceBrutto = applyVat(priceNetto, VAT_DE)
-    const finalPrice = addFinalPriceFees(priceBrutto, percentageFees)
+    const finalPrice = addFinalPriceFees(priceBrutto, percentageFees || 0)
 
     return convertToEuro(finalPrice)
   }
@@ -92,23 +96,22 @@ const ProfitCalculator = ({
   const handleChange = event => {
     switch (event.target.name) {
       case "price":
-        // todo sprawdzić czy potrzebujemy parseFloat
-        setPrice(parseFloat(event.target.value || 0))
+        setPrice(parseFloat(event.target.value))
         break
       case "profit":
-        setProfit(parseFloat(event.target.value || 0))
+        setProfit(parseFloat(event.target.value))
         break
       case "supplier-costs":
-        setSupplierCosts(parseFloat(event.target.value || 0))
+        setSupplierCosts(parseFloat(event.target.value))
         break
       case "fixed-costs":
-        setFixedCosts(parseFloat(event.target.value || 0))
+        setFixedCosts(parseFloat(event.target.value))
         break
       case "percentage-fees":
-        setPercentageFees(parseFloat(event.target.value || 0))
+        setPercentageFees(parseFloat(event.target.value))
         break
       case "euro-currency":
-        setEuroCurrency(parseFloat(event.target.value || 0))
+        setEuroCurrency(parseFloat(event.target.value))
         break
       default:
         break
@@ -123,7 +126,7 @@ const ProfitCalculator = ({
           id="euro-currency"
           name="euro-currency"
           type="number"
-          value={euroCurrency}
+          value={euroCurrency || 0}
           onChange={handleChange}
         />
       </InputGroup>
@@ -131,12 +134,26 @@ const ProfitCalculator = ({
       <InputGroup>
         <InputLeftAddon children="Koszty dostawcy (excel) " />
         <Input
+          pr="4.5rem"
           id="supplier-costs"
           name="supplier-costs"
           type="number"
-          value={supplierCosts}
+          value={supplierCosts || 0}
           onChange={handleChange}
         />
+        <InputRightElement width="4.5rem">
+          <Button
+            href="/suppliers.xlsx"
+            as="a"
+            target="_blank"
+            h="1.75rem"
+            size="sm"
+            right={50}
+            bgColor={"green.300"}
+          >
+            Excel
+          </Button>
+        </InputRightElement>
         <InputRightAddon children="zł" />
       </InputGroup>
 
@@ -146,9 +163,22 @@ const ProfitCalculator = ({
           id="fixed-costs"
           name="fixed-costs"
           type="number"
-          value={fixedCosts}
+          value={fixedCosts || 0}
           onChange={handleChange}
         />
+        <InputRightElement width="4.5rem">
+          <Button
+            href="/fixed-costs.xlsx"
+            as="a"
+            target="_blank"
+            h="1.75rem"
+            size="sm"
+            right={50}
+            bgColor={"green.300"}
+          >
+            Excel
+          </Button>
+        </InputRightElement>
         <InputRightAddon children="zł" />
       </InputGroup>
 
@@ -160,14 +190,27 @@ const ProfitCalculator = ({
           type="number"
           min="1"
           max="100"
-          value={percentageFees}
+          value={percentageFees || 0}
           onChange={handleChange}
         />
+        <InputRightElement width="4.5rem">
+          <Button
+            href="/percentage-fees.xlsx"
+            as="a"
+            target="_blank"
+            h="1.75rem"
+            size="sm"
+            right={50}
+            bgColor={"green.300"}
+          >
+            Excel
+          </Button>
+        </InputRightElement>
         <InputRightAddon children="%" />
       </InputGroup>
 
       <InputGroup>
-        <InputLeftAddon children="Cena zakupu" />
+        <InputLeftAddon children="Cena zakupu (netto)" />
         <Input
           id="price"
           type="number"
@@ -180,7 +223,7 @@ const ProfitCalculator = ({
       </InputGroup>
 
       <InputGroup pb={5}>
-        <InputLeftAddon children="Oczekiwany zysk" />
+        <InputLeftAddon children="Oczekiwany zysk (netto)" />
         <Input
           id="profit"
           type="number"
@@ -206,7 +249,7 @@ const ProfitCalculator = ({
           type="number"
           name="finalPrice"
           placeholder="Cena końcowa"
-          value={finalPrice}
+          value={finalPrice || 0}
           readOnly
           focusBorderColor="red.400"
           variant="filled"
