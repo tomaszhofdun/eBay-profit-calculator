@@ -15,11 +15,11 @@ import {
 const ProfitCalculator = ({
   data: { supplierData, fixedCostsData, percentageFeesData },
 }) => {
-  const VAT_DE = 19 // VAT DE 19%
+  const [euroCurrency, setEuroCurrency] = useState(0.23)
+  const [vat, setVat] = useState(19)
   const [supplierCosts, setSupplierCosts] = useState(0)
   const [fixedCosts, setFixedCosts] = useState(0)
   const [percentageFees, setPercentageFees] = useState(0)
-  const [euroCurrency, setEuroCurrency] = useState(0.23)
   const [price, setPrice] = useState("")
   const [profit, setProfit] = useState("")
   const [finalPrice, setFinalPrice] = useState(0)
@@ -83,7 +83,7 @@ const ProfitCalculator = ({
     const priceNetto =
       (supplierCosts || 0) + (fixedCosts || 0) + (price || 0) + (profit || 0)
 
-    const priceBrutto = applyVat(priceNetto, VAT_DE)
+    const priceBrutto = applyVat(priceNetto, vat)
     const finalPrice = addFinalPriceFees(priceBrutto, percentageFees || 0)
 
     return convertToEuro(finalPrice)
@@ -91,7 +91,15 @@ const ProfitCalculator = ({
 
   useEffect(() => {
     setFinalPrice(getFinalPrice())
-  }, [supplierCosts, fixedCosts, percentageFees, euroCurrency, price, profit])
+  }, [
+    supplierCosts,
+    fixedCosts,
+    percentageFees,
+    vat,
+    euroCurrency,
+    price,
+    profit,
+  ])
 
   const handleChange = event => {
     switch (event.target.name) {
@@ -109,6 +117,9 @@ const ProfitCalculator = ({
         break
       case "percentage-fees":
         setPercentageFees(parseFloat(event.target.value))
+        break
+      case "vat":
+        setVat(parseFloat(event.target.value))
         break
       case "euro-currency":
         setEuroCurrency(parseFloat(event.target.value))
@@ -182,7 +193,7 @@ const ProfitCalculator = ({
         <InputRightAddon children="zł" />
       </InputGroup>
 
-      <InputGroup pb={5}>
+      <InputGroup>
         <InputLeftAddon children="Koszty procentowe od sprzedaży (excel)" />
         <Input
           id="percentage-fees"
@@ -206,6 +217,20 @@ const ProfitCalculator = ({
             Excel
           </Button>
         </InputRightElement>
+        <InputRightAddon children="%" />
+      </InputGroup>
+
+      <InputGroup pb={5}>
+        <InputLeftAddon children="VAT doliczony do ceny końcowej" />
+        <Input
+          id="vat"
+          name="vat"
+          type="number"
+          min="1"
+          max="100"
+          value={vat || 0}
+          onChange={handleChange}
+        />
         <InputRightAddon children="%" />
       </InputGroup>
 
