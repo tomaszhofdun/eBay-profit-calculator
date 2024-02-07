@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react"
 import { parseToFloat } from "../../../helpers/parseNumbers"
 import {
   AbsoluteCenter,
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Box,
   Button,
   Divider,
@@ -13,7 +17,12 @@ import {
 } from "@chakra-ui/react"
 
 const ProfitCalculator = ({
-  data: { supplierData, fixedCostsData, percentageFeesData },
+  data: {
+    supplierData,
+    fixedCostsData,
+    percentageFeesData,
+    collectionAddress = "",
+  },
 }) => {
   const [euroCurrency, setEuroCurrency] = useState(0.23)
   const [vat, setVat] = useState(19)
@@ -131,7 +140,12 @@ const ProfitCalculator = ({
 
   return (
     <div className="epc-calculator">
-      <InputGroup pb={5}>
+      <Alert status="warning" variant="left-accent">
+        <AlertIcon />
+        <AlertTitle>Adres do odbioru paczek</AlertTitle>
+        <AlertDescription>{collectionAddress}</AlertDescription>
+      </Alert>
+      <InputGroup pb={5} pt={5}>
         <InputLeftAddon children="Kurs EURO do PLN " />
         <Input
           id="euro-currency"

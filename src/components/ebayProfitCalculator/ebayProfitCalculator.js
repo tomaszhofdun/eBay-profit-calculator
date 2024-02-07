@@ -27,6 +27,8 @@ const EbayProfitCalculator = () => {
     supplierData: supplierData.aio,
     fixedCostsData: fixedCostsData.aio,
     percentageFeesData: percentageFeesData.aio,
+    collectionAddress:
+      "AIO FACTORY Sp. Z O. O. Ul. Żwirki i Wigury 15 Hala nr 7A 38-400 Krosno",
   }
 
   const polcarData = {
